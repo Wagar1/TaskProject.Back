@@ -24,10 +24,9 @@ namespace TaskApp.Models
                 context.Tasks.AddRange(
                      new Task
                      {
-                         ID = Guid.NewGuid(),
-                         UserName = "Vugar",
-                         Email = "vugar@gmail.com",
-                         Text = "Go",
+                         UserName = "Test User",
+                         Email = "test_user_1@example.com",
+                         Text = "Hello, world!",
                          Status = 0
                      }
                 );

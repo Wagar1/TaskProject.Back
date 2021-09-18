@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +13,7 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskApp.Models;
@@ -45,6 +46,38 @@ namespace TaskApp
             });
 
             services.AddDbContext<TaskDbContext>(options => options.UseInMemoryDatabase("tasksDb"));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var error = new Dictionary<string, dynamic>();
+                    var message = new Dictionary<string, string>();
+                    error.Add("status", "error");
+                    foreach (var key in actionContext.ModelState.Keys)
+                    {
+                        foreach (var parameter in actionContext.ActionDescriptor.Parameters)
+                        {
+                            var prop = parameter.ParameterType.GetProperty(key);
+
+                            if (prop != null)
+                            {
+                                var att = prop.GetCustomAttributes(typeof(ValidationAttribute), false).FirstOrDefault() as ValidationAttribute;
+                                if (att is RequiredAttribute requiredAttribute)
+                                {
+                                    message.Add(prop.Name, "Поле является обязательным для заполнения");
+                                }
+                                if (att is EmailAddressAttribute emailAddressAttribute)
+                                {
+                                    message.Add(prop.Name, "Неверный email");
+                                }
+                            }
+                        }
+                    }
+                    error.Add("message", message);
+                    return new BadRequestObjectResult(error);
+                };
+            });
 
         }
 

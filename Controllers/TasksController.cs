@@ -34,9 +34,9 @@ namespace TaskApp.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromForm]string username, [FromForm]string email, [FromForm]string text)
+        public IActionResult Create([FromForm]TaskDTO taskDto)
         {
-            Models.Task newTask = new Models.Task() { ID = Guid.NewGuid(), UserName = username,  Email = email, Text = text, Status = 0 };
+            Models.Task newTask = new Models.Task() {  UserName = taskDto.UserName,  Email = taskDto.Email, Text = taskDto.Text, Status = 0 };
             taskRepository.CreateTask(newTask);
             var response = new TaskViewModel("ok", newTask);
             return new ObjectResult(response){ StatusCode = StatusCodes.Status201Created };
