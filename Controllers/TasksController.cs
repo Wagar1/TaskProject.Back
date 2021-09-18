@@ -20,6 +20,7 @@ namespace TaskApp.Controllers
             taskRepository = repo;
         }
 
+        [HttpGet]
         public IActionResult Get([FromQuery] string developer)
         {
             if (string.IsNullOrEmpty(developer))
@@ -30,6 +31,15 @@ namespace TaskApp.Controllers
 
             var tasks = new TaskViewModel("ok", new Message(taskRepository.Tasks, taskRepository.Tasks.Count()));
             return Ok(tasks);
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create([FromForm]string username, [FromForm]string email, [FromForm]string text)
+        {
+            Models.Task newTask = new Models.Task() { ID = Guid.NewGuid(), UserName = username,  Email = email, Text = text, Status = 0 };
+            taskRepository.CreateTask(newTask);
+            var response = new TaskViewModel("ok", newTask);
+            return new ObjectResult(response){ StatusCode = StatusCodes.Status201Created };
         }
     }
 }

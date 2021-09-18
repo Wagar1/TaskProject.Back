@@ -24,11 +24,11 @@ namespace TaskApp.Models
                 context.Tasks.AddRange(
                      new Task
                      {
-                         ID = 1,
+                         ID = Guid.NewGuid(),
                          UserName = "Vugar",
                          Email = "vugar@gmail.com",
                          Text = "Go",
-                         Status = "0"
+                         Status = 0
                      }
                 );
 
