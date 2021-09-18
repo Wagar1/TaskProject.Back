@@ -49,5 +49,23 @@ namespace TaskApp.Models
             // 5. Return Token from method
             return tokenHandler.WriteToken(token);
         }
+        public static bool _isEmptyOrInvalid(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return true;
+            }
+            try
+            {
+                var jwtToken = new JwtSecurityToken(token);
+                return (jwtToken == null) || (jwtToken.ValidFrom > DateTime.UtcNow) || (jwtToken.ValidTo < DateTime.UtcNow);
+            }
+            catch (Exception)
+            {
+
+                return true;
+            }
+            
+        }
     }
 }

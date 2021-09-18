@@ -9,7 +9,7 @@ namespace TaskApp.Models
     {
         IQueryable<Task> Tasks { get; }
         void CreateTask(Task task);
-        void SaveTask(Task task);
+        void EditTask(Task task);
         void DeleteTask(Task task);
     }
 }

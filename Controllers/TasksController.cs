@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskApp.Models;
@@ -41,6 +42,25 @@ namespace TaskApp.Controllers
             taskRepository.CreateTask(newTask);
             var response = new TaskViewModel("ok", newTask);
             return new ObjectResult(response){ StatusCode = StatusCodes.Status201Created };
+        }
+
+        [HttpPost("edit/{id}")]
+        public IActionResult Edit(int id, [FromForm]EditTaskDTO editTaskDTO)
+        {
+            bool isInvalid = Auth._isEmptyOrInvalid(editTaskDTO.Token);        
+
+            if (!isInvalid)
+            {
+                var task = new Models.Task() { ID = id, Status = editTaskDTO.Status.Value, Text = editTaskDTO.Text };
+                taskRepository.EditTask(task);
+                return Ok(new TaskViewModel("ok"));
+            }
+            else
+            {
+                var token = new Dictionary<string, string>();
+                token.Add("token", "Токен истёк");
+                return BadRequest(new TaskViewModel("error", token));
+            }
         }
     }
 }

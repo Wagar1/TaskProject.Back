@@ -7,6 +7,10 @@ namespace TaskApp.Models.ViewModels
 {
     public class TaskViewModel
     {
+        public TaskViewModel(string status)
+        {
+            Status = status;
+        }
         public TaskViewModel(string status, dynamic message)
         {
             Status = status;

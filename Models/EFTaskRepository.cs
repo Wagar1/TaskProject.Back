@@ -27,8 +27,17 @@ namespace TaskApp.Models
             context.SaveChanges();
         }
 
-        public void SaveTask(Task task)
+        public void EditTask(Task task)
         {
+            var editTask = context.Tasks.First(x => x.ID == task.ID);
+            if (!string.IsNullOrEmpty(task.Text))
+            {
+                editTask.Text = task.Text;
+            }
+            if(task.Status != 0)
+            {
+                editTask.Status = task.Status;
+            }
             context.SaveChanges();
         }
     }
