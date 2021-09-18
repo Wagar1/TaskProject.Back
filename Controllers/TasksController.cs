@@ -10,7 +10,6 @@ using TaskApp.Models.ViewModels;
 
 namespace TaskApp.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase

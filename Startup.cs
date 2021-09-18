@@ -82,7 +82,10 @@ namespace TaskApp
                                 var att = prop.GetCustomAttributes(typeof(ValidationAttribute), false).FirstOrDefault() as ValidationAttribute;
                                 if (att is RequiredAttribute requiredAttribute)
                                 {
-                                    message.Add(prop.Name, "Поле является обязательным для заполнения");
+                                    if (prop.Name == "Password")
+                                        message.Add(prop.Name, "Неверный логин или пароль");
+                                    else
+                                        message.Add(prop.Name, "Поле является обязательным для заполнения");
                                 }
                                 if (att is EmailAddressAttribute emailAddressAttribute)
                                 {

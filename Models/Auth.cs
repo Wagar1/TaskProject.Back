@@ -11,8 +11,8 @@ namespace TaskApp.Models
 {
     public class Auth : IJwtAuth
     {
-        private readonly string username = "kirtesh";
-        private readonly string password = "Demo1";
+        private readonly string username = "admin1";
+        private readonly string password = "123";
         private readonly string key;
         public Auth(string key)
         {
